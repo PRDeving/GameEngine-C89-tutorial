@@ -2,12 +2,16 @@
 #include "graphics.h"
 
 int GRAPHICS_init(Graphics *graphics) {
+  if (!graphics -> windowTitle) graphics -> windowTitle = "No Name";
+  if (!graphics -> width) graphics -> width = 800;
+  if (!graphics -> height) graphics -> height = 600;
+
   graphics -> window = SDL_CreateWindow(
-      "C89 Game Engine Tutorial",
+      graphics -> windowTitle,
       SDL_WINDOWPOS_CENTERED,
       SDL_WINDOWPOS_CENTERED,
-      800,
-      600,
+      graphics -> width,
+      graphics -> height,
       SDL_WINDOW_SHOWN
       );
 
