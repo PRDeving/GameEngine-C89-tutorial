@@ -1,5 +1,5 @@
-#include <SDL2/SDL.h>
 #include <stdio.h>
+#include <raylib.h>
 #include "src/engine.h"
 
 unsigned int initState1() {
@@ -10,6 +10,15 @@ unsigned int initState1() {
 unsigned int updateState1(float deltatime) {
   printf("state 1 update %f\n", deltatime);
   return 0;
+}
+
+unsigned int drawState1(float deltatime) {
+    BeginDrawing();
+    ClearBackground(RAYWHITE);
+    DrawText("LOGO SCREEN", 20, 20, 40, LIGHTGRAY);
+    DrawText("WAIT for 2 SECONDS...", 290, 220, 20, GRAY);
+    EndDrawing();
+    return 0;
 }
 
 unsigned int destroyState1() {
@@ -23,21 +32,19 @@ int main() {
   options.width = 480;
   options.height = 272;
 
-  Engine engine;
+  Engine engine = {0};
   ENGINE_init(&engine, &options);
 
-  State state1;
+  State state1 = {0};
   state1.init = initState1;
-  state1.update = updateState1;
+  /* state1.update = updateState1; */
+  state1.draw = drawState1;
   state1.destroy = destroyState1;
   STATEMANAGER_push(&engine.statemanager, &state1);
 
-  SDL_Event e;
-  while (!engine.quit) {
-    while (SDL_PollEvent(&e)) {
-      if (e.type == SDL_QUIT) engine.quit = 1;
-    }
-    STATEMANAGER_update(&engine.statemanager, 10.0f);
+  while (!WindowShouldClose()) {
+      STATEMANAGER_update(&engine.statemanager, 10.0f);
+      STATEMANAGER_draw(&engine.statemanager, 10.0f);
   }
 
   ENGINE_free(&engine);

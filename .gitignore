@@ -1,2 +1,6 @@
 *.out
+*.o
+*.so
+*.a
+include
 test
